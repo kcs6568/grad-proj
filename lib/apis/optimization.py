@@ -7,52 +7,6 @@ from torch.optim.lr_scheduler import _LRScheduler
 
 
 def get_optimizer_for_gating(args, model):
-    method = args.method
-    setup = args.setup
-    
-    # # if method == 'cross_logits':
-    # #     if args.lr != args.cross_module_lr:
-    # #         main_params = {
-    # #             'params': [p for n, p in model.named_parameters() if p.requires_grad and not "cross_logits" in n]}
-    # #         cross_module_params = {
-    # #             'params': [p for p in model.cross_logits.parameters() if p.requires_grad], 'lr': float(args.cross_module_lr)}
-
-    # #         params = [main_params, cross_module_params]
-    # #         # params = [main_params]
-            
-    # #     else:
-    # #         params = [{
-    # #             'params': [p for n, p in model.named_parameters() if p.requires_grad and not "cross_logits" in n]}]
-       
-    # if method == 'distill':
-    #     main_params = {
-    #             'params': [p for n, p in model.named_parameters() if p.requires_grad and not "layerwise" in n]}
-    #     kd_params = {
-    #         'params': [p for n, p in model.named_parameters() if p.requires_grad and "layerwise" in n],
-    #         'lr': float(args.distill_cfg['distill_lr'])}
-
-    #     params = [main_params, kd_params]
-        
-    # else:
-    #     params = [p for p in model.parameters() if p.requires_grad]
-    
-    # if args.opt == 'sgd':
-    #     optimizer = torch.optim.SGD(params, lr=args.lr, momentum=args.momentum, weight_decay=args.weight_decay)
-    # elif args.opt == 'nesterov':
-    #     optimizer = torch.optim.SGD(params, lr=args.lr, momentum=args.momentum, weight_decay=args.weight_decay, nesterov=True)
-    # elif args.opt =='adam':
-    #     if 'eps' in args:
-    #         optimizer = torch.optim.Adam(params, lr=args.lr, weight_decay=args.weight_decay, 
-    #                                      eps=float(args.eps))
-    #     else:
-    #         optimizer = torch.optim.Adam(params, lr=args.lr, weight_decay=args.weight_decay)
-            
-    # elif args.opt =='adamw':
-    #     optimizer = torch.optim.AdamW(params, lr=args.lr, weight_decay=args.weight_decay)
-    
-    
-    # return optimizer
-    
     optimizer = {}
     
     main_opt = None
@@ -79,8 +33,6 @@ def get_optimizer_for_gating(args, model):
         
         else:
             if args.gating_opt is None:
-                # gate_params = {'params': [p for n, p in model.named_parameters() if 'gating' in n and p.requires_grad], 'lr': args.gating_lr}
-            # all_params = [{'params': backbone_params}, gate_params]
                 if args.use_gate:
                     if args.one_groups:
                         all_params = [p for p in model.parameters()]
